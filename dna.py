@@ -9,14 +9,14 @@ def main():
     if len(sys.argv) != 3:
         print("Incorrect number of arguments.")
         print(f"Usage: {sys.argv[0]} <dna database> <sequence>")
-        sys.exit(1)
+        return
 
     # Read database file into a variable
     try:
         dna_df = pd.read_csv(sys.argv[1])
     except FileNotFoundError:
         print(f"Unable to find file: {sys.argv[1]}")
-        sys.exit(1)
+        return
     
     # Read DNA sequence file into a variable
     try:
@@ -24,12 +24,18 @@ def main():
             sequence = file.readline()
     except FileNotFoundError:
         print(f"Unable to find file: {sys.argv[2]}")
-        sys.exit(1)
+        return
 
-    # TODO: Find longest match of each STR in DNA sequence
-
-    # TODO: Check database for matching profiles
-
+    # Find longest match of each STR in DNA sequence
+    counts = []
+    for STR in dna_df.columns[1:]:
+        counts.append(longest_match(sequence, STR))
+    # Check database for matching profiles
+    name = "No match"
+    for _, row in dna_df.iterrows():
+        if(counts == row[1:].tolist()):
+            name = row[0]
+    print(name)
     return
 
 
