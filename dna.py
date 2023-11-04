@@ -1,18 +1,30 @@
 import csv
+import pandas as pd
 import sys
 
 
 def main():
 
-    # TODO: Check for command-line usage
+    # Check for command-line usage
     if len(sys.argv) != 3:
         print("Incorrect number of arguments.")
-        print(f"Usage: {argv[0]} <dna database> <sequence>")
-    
+        print(f"Usage: {sys.argv[0]} <dna database> <sequence>")
+        sys.exit(1)
 
-    # TODO: Read database file into a variable
+    # Read database file into a variable
+    try:
+        dna_df = pd.read_csv(sys.argv[1])
+    except FileNotFoundError:
+        print(f"Unable to find file: {sys.argv[1]}")
+        sys.exit(1)
     
-    # TODO: Read DNA sequence file into a variable
+    # Read DNA sequence file into a variable
+    try:
+        with open(sys.argv[2], "r") as file:
+            sequence = file.readline()
+    except FileNotFoundError:
+        print(f"Unable to find file: {sys.argv[2]}")
+        sys.exit(1)
 
     # TODO: Find longest match of each STR in DNA sequence
 
